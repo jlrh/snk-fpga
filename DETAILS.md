@@ -137,3 +137,15 @@ jtopl) **no se incluyen**. Versión rápida:
 
 **GPLv3** (ver [`LICENSE`](LICENSE)) — la exigen las dependencias JTFRAME / jtopl; sus avisos de copyright se
 conservan en las fuentes.
+
+<!-- omf_release:dependencias:ffgwar -->
+## Dependencias externas de `ffgwar`
+
+Este repositorio contiene **solo el código de los cores**. Para compilar `ffgwar`
+hacen falta estas piezas, que se distribuyen desde su propio origen:
+
+| Qué | De dónde | Dónde va |
+|---|---|---|
+| jtframe — framework de compilacion y modulos comunes (SDRAM, descarga, CPU Z80 = T80 de Daniel Wallner, RAM) | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
+| jtopl — YM3526 (y la parte FM del Y8950) | [https://github.com/jotego/jtopl](https://github.com/jotego/jtopl) | `modules/jtopl` |
+<!-- /omf_release:dependencias:ffgwar -->

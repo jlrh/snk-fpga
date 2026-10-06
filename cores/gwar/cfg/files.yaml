@@ -1,0 +1,23 @@
+gwar:
+  - get:
+    - jtgwar_game.v
+    - gwar_main.v
+    - gwar_sound.v
+    - gwar_y8950.v
+    - gwar_adpcmb.v
+    - gwar_video.v
+    - gwar_bg.v
+    - gwar_tx.v
+    - gwar_obj.v
+    - gwar_blankmap.v
+jtframe:
+  - from: ram
+    get:
+      - jtframe_ram.v
+      - jtframe_dual_ram.v
+  - from: cpu
+    get:
+      - jtframe_z80.yaml
+jtopl:
+  - get:
+    - jt26.yaml
