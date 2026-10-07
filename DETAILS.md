@@ -51,6 +51,9 @@ uses a nominal 60 Hz. The gun recoil solenoids are not driven.
 A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game ROMs are loaded at **runtime** from the
 `.mra`. Or build from source (`cores/bbusters/`). See [`BUILD.md`](BUILD.md).
 
+**Other versions:** the MAME clones (US v3, US v2, Japan v2 3-player, Japan v2 2-player) have their own `.mra` in
+`cores/bbusters/mra/_alternatives/` — same `.rbf`, same merged `bbusters.zip`.
+
 ### Mechanized Attack (SNK, 1989)
 Two-player light-gun shooter on the SNK A8002 board. Hardware: **68000** at 12 MHz + **Z80** at 4 MHz for the sound +
 **YM2608** (OPNA: 6 FM channels, SSG, rhythm and ADPCM-B voices), two 16×16 scrolling playfields of 256×32 tiles, an
@@ -72,6 +75,9 @@ driven.
 A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game ROMs, including the YM2608 internal
 rhythm ROM (`ym2608.zip`), are loaded at **runtime** from the `.mra`. Or build from source (`cores/mechatt/`, plus the
 shared video in `cores/bbusters/hdl/`). See [`BUILD.md`](BUILD.md).
+
+**Other versions:** the MAME clones (Japan, US, US v1 single player) have their own `.mra` in
+`cores/mechatt/mra/_alternatives/` — same `.rbf`, same merged `mechatt.zip`.
 
 ## Build
 
@@ -179,6 +185,9 @@ pistolas no se manejan.
 Hay un `.rbf` precompilado en [`releases/`](releases/) — **distribuible**: todas las ROMs del juego se cargan en
 **tiempo de ejecución** desde el `.mra`. O compílalo desde las fuentes (`cores/bbusters/`). Ver [`BUILD.md`](BUILD.md).
 
+**Otras versiones:** los clones de MAME (US v3, US v2, Japan v2 de 3 jugadores, Japan v2 de 2 jugadores) tienen su
+propio `.mra` en `cores/bbusters/mra/_alternatives/` — mismo `.rbf`, mismo `bbusters.zip` merged.
+
 ### Mechanized Attack (SNK, 1989)
 Juego de disparos con pistola para dos jugadores sobre la placa SNK A8002. Hardware: **68000** a 12 MHz + **Z80** a
 4 MHz para el sonido + **YM2608** (OPNA: 6 canales FM, SSG, ritmo y voces ADPCM-B), dos fondos de 16×16 con scroll de
@@ -201,6 +210,9 @@ retroceso de las pistolas no se manejan.
 Hay un `.rbf` precompilado en [`releases/`](releases/) — **distribuible**: todas las ROMs del juego, incluida la ROM
 interna de ritmo del YM2608 (`ym2608.zip`), se cargan en **tiempo de ejecución** desde el `.mra`. O compílalo desde
 las fuentes (`cores/mechatt/`, más el vídeo compartido de `cores/bbusters/hdl/`). Ver [`BUILD.md`](BUILD.md).
+
+**Otras versiones:** los clones de MAME (Japan, US, US v1 de un jugador) tienen su propio `.mra` en
+`cores/mechatt/mra/_alternatives/` — mismo `.rbf`, mismo `mechatt.zip` merged.
 
 ## Compilar
 

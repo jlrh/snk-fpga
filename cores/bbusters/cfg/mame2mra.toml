@@ -3,14 +3,22 @@ author=["snk-fpga"]
 
 [parse]
 sourcefile=[ "bbusters.cpp" ]
-machines=[ "bbusters" ]
+machines=[ "bbusters", "bbustersu", "bbustersua", "bbustersj", "bbustersja" ]
 rename = [
     { setname="bbusters", name="Beast Busters (FF, SNK, 1989)" },
+    { setname="bbustersu", name="Beast Busters (FF, SNK, 1989, US v3)" },
+    { setname="bbustersua", name="Beast Busters (FF, SNK, 1989, US v2)" },
+    { setname="bbustersj", name="Beast Busters (FF, SNK, 1989, Japan v2, 3P)" },
+    { setname="bbustersja", name="Beast Busters (FF, SNK, 1989, Japan v2, 2P)" },
 ]
 
 [buttons]
 names=[
-    { machine="bbusters", names="Disparo,Granada" }
+    { machine="bbusters", names="Disparo,Granada" },
+    { machine="bbustersu", names="Disparo,Granada" },
+    { machine="bbustersua", names="Disparo,Granada" },
+    { machine="bbustersj", names="Disparo,Granada" },
+    { machine="bbustersja", names="Disparo,Granada" }
 ]
 
 [dipsw]
