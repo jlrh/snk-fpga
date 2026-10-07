@@ -282,7 +282,6 @@ hacen falta estas piezas, que se distribuyen desde su propio origen:
 | jtframe — framework de compilacion y modulos comunes (SDRAM, descarga, pistolas, CPU 68000 = fx68k de Jorge Cwik, CPU Z80 = T80 de Daniel Wallner, RAM) | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
 | jt12 — FM y SSG (jt49) del YM2608 | [https://github.com/jotego/jt12](https://github.com/jotego/jt12) | `modules/jt12` |
 <!-- /omf_release:dependencias:ffmechatt -->
-
 <!-- omf_release:dependencias:ffbbusters -->
 ## Dependencias externas de `ffbbusters`
 

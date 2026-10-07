@@ -3,14 +3,20 @@ author=["snk-fpga"]
 
 [parse]
 sourcefile=[ "mechatt.cpp" ]
-machines=[ "mechatt" ]
+machines=[ "mechatt", "mechattj", "mechattu", "mechattu1" ]
 rename = [
     { setname="mechatt", name="Mechanized Attack (FF, SNK, 1989)" },
+    { setname="mechattj", name="Mechanized Attack (FF, SNK, 1989, Japan)" },
+    { setname="mechattu", name="Mechanized Attack (FF, SNK, 1989, US)" },
+    { setname="mechattu1", name="Mechanized Attack (FF, SNK, 1989, US v1, 1P)" },
 ]
 
 [buttons]
 names=[
-    { machine="mechatt", names="Disparo,Granada" }
+    { machine="mechatt", names="Disparo,Granada" },
+    { machine="mechattj", names="Disparo,Granada" },
+    { machine="mechattu", names="Disparo,Granada" },
+    { machine="mechattu1", names="Disparo,Granada" }
 ]
 
 [dipsw]
