@@ -4,6 +4,14 @@ SNK arcade cores for **MiSTer**. · Cores arcade de **SNK** para **MiSTer**.
 
 <!-- MOSAICO:AUTO -->
 
+## Horizontal
+
+<table>
+<tr>
+<td align="center" width="33%"><a href="DETAILS.md#mechanized-attack-snk-1989"><img src="docs/screens/mechatt.png" alt="Mechanized Attack"></a><br><b>Mechanized Attack</b> · 1989</td>
+</tr>
+</table>
+
 ## Vertical
 
 <table>

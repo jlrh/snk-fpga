@@ -1,0 +1,33 @@
+[global]
+author=["snk-fpga"]
+
+[parse]
+sourcefile=[ "mechatt.cpp" ]
+machines=[ "mechatt" ]
+rename = [
+    { setname="mechatt", name="Mechanized Attack (FF, SNK, 1989)" },
+]
+
+[buttons]
+names=[
+    { machine="mechatt", names="Disparo,Granada" }
+]
+
+[dipsw]
+delete=[{names=["Unused","Unknown"]}]
+
+[ROM]
+
+regions = [
+    { name="maincpu", width=16, reverse=true },
+    { name="audiocpu",            start="SND_START" },
+    { name="tx_tiles",            start="JTFRAME_BA1_START" },
+    { name="bg1_tiles",           start="BG1_START" },
+    { name="bg2_tiles",           start="BG2_START" },
+    { name="sprites",             start="JTFRAME_BA2_START" },
+    { name="ymsnd",               start="JTFRAME_BA3_START" },
+    { name="ymsnd:internal",      start="RHY_START" },
+    { name="sprites:scale_table", start="JTFRAME_PROM_START", files=[ {name="ma_8.f10", crc="61f3de03", size=0x10000} ] },
+]
+order = [ "maincpu", "audiocpu", "tx_tiles", "bg1_tiles", "bg2_tiles", "sprites", "ymsnd", "ymsnd:internal",
+          "sprites:scale_table" ]

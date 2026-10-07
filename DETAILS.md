@@ -28,20 +28,43 @@ keep turning). **Known limitation:** the real video timing of the SNK8601/8602 i
 A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game ROMs are loaded at **runtime** from
 the `.mra`; the bitstream bakes no game data. Or build from source (`cores/gwar/`). See [`BUILD.md`](BUILD.md).
 
+### Mechanized Attack (SNK, 1989)
+Two-player light-gun shooter on the SNK A8002 board. Hardware: **68000** at 12 MHz + **Z80** at 4 MHz for the sound +
+**YM2608** (OPNA: 6 FM channels, SSG, rhythm and ADPCM-B voices), two 16×16 scrolling playfields of 256×32 tiles, an
+8×8 text layer and a zooming sprite generator (sprites of 16 to 128 pixels scaled through a ROM table). The video is
+shared with Beast Busters. No FPGA YM2608 existed: the **rhythm section and the ADPCM-B channel** were written for this
+core and match MAME's ymfm sample by sample; the FM and SSG parts reuse JT12. 256×224 (horizontal).
+
+**Status: playable on MiSTer** — tested on hardware (boot, coins, a full game, graphics, music and effects, light guns
+with a GunCon 3). In simulation the video matches MAME pixel-for-pixel in 149 of 149 reference scenes (title,
+attract and a full game, ~30 000 frames), and the sound CPU follows MAME's sound commands: the writes to the YM2608 match MAME over 900 frames,
+apart from two timer-flag acknowledgements one poll apart.
+
+**Light guns:** two guns through MiSTer's light-gun support (mouse, Sinden, Gun4IR, GunCon or analog stick), with an
+on-screen crosshair. Calibrate inside the core (OSD → *Define joystick buttons* → F10). Trigger = button 1,
+grenade = button 2. **Known limitations:** the real video timing of the board is not documented; the core uses a
+6 MHz pixel clock, 384×264 (15.6 kHz / 59.2 Hz), while MAME uses a nominal 60 Hz. The gun recoil solenoids are not
+driven.
+
+A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game ROMs, including the YM2608 internal
+rhythm ROM (`ym2608.zip`), are loaded at **runtime** from the `.mra`. Or build from source (`cores/mechatt/`, plus the
+shared video in `cores/bbusters/hdl/`). See [`BUILD.md`](BUILD.md).
+
 ## Build
 
-This repo contains **only the core code** (`cores/<core>/`). The framework and third-party modules (jtframe, jtopl)
-are **not included**. Quick version:
+This repo contains **only the core code** (`cores/<core>/`). The framework and third-party modules (jtframe, jtopl,
+jt12) are **not included**. Quick version:
 
 1. Clone [jtcores](https://github.com/jotego/jtcores) (brings jtframe + modules).
-2. Copy this repo's `cores/<core>/` into your jtcores checkout.
+2. Copy this repo's `cores/<core>/` into your jtcores checkout (for `mechatt`, also `cores/bbusters/`: the shared
+   video).
 3. Build: `jtcore <core> -mister -c` (e.g. `jtcore gwar -mister -c`).
 
 📋 **Step-by-step in [`BUILD.md`](BUILD.md).**
 
 ## ROMs
 
-**Not included** (copyrighted material). Bring your own MAME romset (**merged**, MAME 0.288, `gwar.zip`). The `.mra`
+**Not included** (copyrighted material). Bring your own MAME romsets (**merged**, MAME 0.288: `gwar.zip`; `mechatt.zip` + `ym2608.zip`). The `.mra`
 describes how to assemble it; every ROM is loaded at runtime.
 
 ## Credits
@@ -52,6 +75,10 @@ describes how to assemble it; every ROM is loaded at runtime.
   McPhail, Jarek Parchanski, Nicola Salmoria, Tomasz Slanina, Phil Stroffolino, Acho A. Tang, Victor Trucco), the
   board documentation by **Guru**, and the **ymfm** sound library (Aaron Giles) as the behavioural reference for the
   Y8950
+- **JT12 / JT49** (Jose Tejada) — the FM and SSG parts of the YM2608 in Mechanized Attack
+- **fx68k** (Jorge Cwik) — the 68000 CPU, as packaged in JTFRAME
+- **MAME** — for Mechanized Attack: the `snk/mechatt.cpp` driver and the `snk_bbusters_spr` sprite device (Bryan
+  McPhail), and **ymfm** (Aaron Giles) as the behavioural reference for the YM2608
 
 ## Acknowledgements
 
@@ -62,7 +89,7 @@ describes how to assemble it; every ROM is loaded at runtime.
 
 ## License
 
-**GPLv3** (see [`LICENSE`](LICENSE)) — required by the JTFRAME / jtopl dependencies; their copyright notices are
+**GPLv3** (see [`LICENSE`](LICENSE)) — required by the JTFRAME / jtopl / JT12 dependencies; their copyright notices are
 preserved in the sources.
 
 ---
@@ -101,20 +128,44 @@ Hay un `.rbf` precompilado en [`releases/`](releases/) — **distribuible**: tod
 **tiempo de ejecución** desde el `.mra`; el bitstream no lleva datos del juego. O compílalo desde las fuentes
 (`cores/gwar/`). Ver [`BUILD.md`](BUILD.md).
 
+### Mechanized Attack (SNK, 1989)
+Juego de disparos con pistola para dos jugadores sobre la placa SNK A8002. Hardware: **68000** a 12 MHz + **Z80** a
+4 MHz para el sonido + **YM2608** (OPNA: 6 canales FM, SSG, ritmo y voces ADPCM-B), dos fondos de 16×16 con scroll de
+256×32 tiles, una capa de texto de 8×8 y un generador de sprites con zoom (sprites de 16 a 128 píxeles escalados por
+una tabla en ROM). El vídeo es compartido con Beast Busters. No existía un YM2608 en FPGA: la **sección de ritmo y el
+canal ADPCM-B** se escribieron para este core y coinciden con el ymfm de MAME muestra a muestra; las partes FM y SSG
+reutilizan JT12. 256×224 (horizontal).
+
+**Estado: jugable en MiSTer** — probado en placa (arranque, monedas, una partida completa, gráficos, música y efectos,
+pistolas con una GunCon 3). En simulación, el vídeo coincide píxel a píxel con MAME en 149 de 149 escenas de
+referencia (título, demo y una partida completa, ~30 000 cuadros), y la CPU de sonido sigue los comandos de MAME: las escrituras al YM2608 coinciden con MAME
+a lo largo de 900 cuadros, salvo dos confirmaciones de flags de timer que llegan con un sondeo de diferencia.
+
+**Pistolas:** dos pistolas mediante el soporte de pistola de MiSTer (ratón, Sinden, Gun4IR, GunCon o stick
+analógico), con mira en pantalla. Calíbralas dentro del core (OSD → *Define joystick buttons* → F10). Gatillo = botón
+1, granada = botón 2. **Limitaciones conocidas:** el timing de vídeo real de la placa no está documentado; el core usa
+reloj de píxel de 6 MHz, 384×264 (15,6 kHz / 59,2 Hz), mientras que MAME usa 60 Hz nominales. Los solenoides de
+retroceso de las pistolas no se manejan.
+
+Hay un `.rbf` precompilado en [`releases/`](releases/) — **distribuible**: todas las ROMs del juego, incluida la ROM
+interna de ritmo del YM2608 (`ym2608.zip`), se cargan en **tiempo de ejecución** desde el `.mra`. O compílalo desde
+las fuentes (`cores/mechatt/`, más el vídeo compartido de `cores/bbusters/hdl/`). Ver [`BUILD.md`](BUILD.md).
+
 ## Compilar
 
 Este repo contiene **solo el código del core** (`cores/<core>/`). El framework y los módulos de terceros (jtframe,
-jtopl) **no se incluyen**. Versión rápida:
+jtopl, jt12) **no se incluyen**. Versión rápida:
 
 1. Clona [jtcores](https://github.com/jotego/jtcores) (trae jtframe + módulos).
-2. Copia `cores/<core>/` de este repo en tu copia de jtcores.
+2. Copia `cores/<core>/` de este repo en tu copia de jtcores (para `mechatt`, también `cores/bbusters/`: el vídeo
+   compartido).
 3. Compila: `jtcore <core> -mister -c` (p. ej. `jtcore gwar -mister -c`).
 
 📋 **Paso a paso en [`BUILD.md`](BUILD.md).**
 
 ## ROMs
 
-**No se incluyen** (material con copyright). Usa tu propio romset de MAME (**merged**, MAME 0.288, `gwar.zip`). El
+**No se incluyen** (material con copyright). Usa tus propios romsets de MAME (**merged**, MAME 0.288: `gwar.zip`; `mechatt.zip` + `ym2608.zip`). El
 `.mra` describe cómo montarlo; todas las ROMs se cargan en tiempo de ejecución.
 
 ## Créditos
@@ -125,6 +176,10 @@ jtopl) **no se incluyen**. Versión rápida:
   McPhail, Jarek Parchanski, Nicola Salmoria, Tomasz Slanina, Phil Stroffolino, Acho A. Tang, Victor Trucco), la
   documentación de la placa de **Guru** y la biblioteca de sonido **ymfm** (Aaron Giles) como referencia de
   comportamiento del Y8950
+- **JT12 / JT49** (Jose Tejada) — las partes FM y SSG del YM2608 de Mechanized Attack
+- **fx68k** (Jorge Cwik) — la CPU 68000, tal como la empaqueta JTFRAME
+- **MAME** — para Mechanized Attack: el driver `snk/mechatt.cpp` y el dispositivo de sprites `snk_bbusters_spr` (Bryan
+  McPhail), e **ymfm** (Aaron Giles) como referencia de comportamiento del YM2608
 
 ## Agradecimientos
 
@@ -135,7 +190,7 @@ jtopl) **no se incluyen**. Versión rápida:
 
 ## Licencia
 
-**GPLv3** (ver [`LICENSE`](LICENSE)) — la exigen las dependencias JTFRAME / jtopl; sus avisos de copyright se
+**GPLv3** (ver [`LICENSE`](LICENSE)) — la exigen las dependencias JTFRAME / jtopl / JT12; sus avisos de copyright se
 conservan en las fuentes.
 
 <!-- omf_release:dependencias:ffgwar -->
@@ -149,3 +204,16 @@ hacen falta estas piezas, que se distribuyen desde su propio origen:
 | jtframe — framework de compilacion y modulos comunes (SDRAM, descarga, CPU Z80 = T80 de Daniel Wallner, RAM) | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
 | jtopl — YM3526 (y la parte FM del Y8950) | [https://github.com/jotego/jtopl](https://github.com/jotego/jtopl) | `modules/jtopl` |
 <!-- /omf_release:dependencias:ffgwar -->
+
+<!-- omf_release:dependencias:ffmechatt -->
+## Dependencias externas de `ffmechatt`
+
+Este repositorio contiene **solo el código de los cores**. Para compilar `ffmechatt`
+hacen falta estas piezas, que se distribuyen desde su propio origen:
+
+| Qué | De dónde | Dónde va |
+|---|---|---|
+| bbusters — video compartido con Beast Busters (jtbbusters_video/tilelayer/obj.v): incluido en ESTE repo, en cores/bbusters/hdl | [https://github.com/jlrh/snk-fpga](https://github.com/jlrh/snk-fpga) | `cores/bbusters` |
+| jtframe — framework de compilacion y modulos comunes (SDRAM, descarga, pistolas, CPU 68000 = fx68k de Jorge Cwik, CPU Z80 = T80 de Daniel Wallner, RAM) | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
+| jt12 — FM y SSG (jt49) del YM2608 | [https://github.com/jotego/jt12](https://github.com/jotego/jt12) | `modules/jt12` |
+<!-- /omf_release:dependencias:ffmechatt -->
