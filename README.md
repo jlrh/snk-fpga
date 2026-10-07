@@ -8,6 +8,7 @@ SNK arcade cores for **MiSTer**. · Cores arcade de **SNK** para **MiSTer**.
 
 <table>
 <tr>
+<td align="center" width="33%"><a href="DETAILS.md#beast-busters-snk-1989"><img src="docs/screens/bbusters.png" alt="Beast Busters"></a><br><b>Beast Busters</b> · 1989</td>
 <td align="center" width="33%"><a href="DETAILS.md#mechanized-attack-snk-1989"><img src="docs/screens/mechatt.png" alt="Mechanized Attack"></a><br><b>Mechanized Attack</b> · 1989</td>
 </tr>
 </table>

@@ -30,6 +30,24 @@ Steps to rebuild any `.rbf` in this repo from scratch. **No patch is required**:
 `cores/gwar/mra/`: it is the one the bitstream expects.
 
 
+## Beast Busters
+
+1. **Place the core** inside jtcores:
+   ```
+   cp -r cores/bbusters  <jtcores>/cores/bbusters
+   ```
+   `cores/bbusters/hdl/jt10_adpcmb_cnt.v` replaces the file of the same name in JT12 (ADPCM-B end-of-sample flag on
+   reset); `cores/bbusters/cfg/files.yaml` already takes it from the core and the rest of the ADPCM files from JT12.
+2. **Build:**
+   ```
+   cd <jtcores> && source setprj.sh
+   jtcore bbusters -mister -c
+   ```
+
+**ROM layout.** The `.mra` loads `bbusters.zip`: the two sprite banks go to separate SDRAM banks, together with the
+YM2610 ADPCM-A/B samples; the sprite scaling table goes to BRAM. The gun calibration EEPROM is saved as NVRAM. Use the
+`.mra` from `cores/bbusters/mra/`.
+
 ## Mechanized Attack
 
 1. **Place the core and the shared video** inside jtcores:
@@ -81,6 +99,24 @@ para MiSTer.
 **Organización de las ROMs.** Las ROMs de sprites (un fichero por plano) las empaqueta la propia `.mra` en palabras de
 32 bits con cuatro planos (`<interleave output="32">`); los tiles de texto y las tres PROM de color van a BRAM. Usa la
 `.mra` de `cores/gwar/mra/`: es la que espera el bitstream.
+
+## Beast Busters
+
+1. **Coloca el core** dentro de jtcores:
+   ```
+   cp -r cores/bbusters  <jtcores>/cores/bbusters
+   ```
+   `cores/bbusters/hdl/jt10_adpcmb_cnt.v` sustituye al fichero del mismo nombre de JT12 (flag de fin de muestra del
+   ADPCM-B en el reinicio); `cores/bbusters/cfg/files.yaml` ya lo toma del core y el resto del ADPCM de JT12.
+2. **Compila:**
+   ```
+   cd <jtcores> && source setprj.sh
+   jtcore bbusters -mister -c
+   ```
+
+**Reparto de las ROMs.** El `.mra` carga `bbusters.zip`: los dos bancos de sprites van a bancos de SDRAM distintos,
+junto con las muestras ADPCM-A/B del YM2610; la tabla de escalado de sprites va a BRAM. La EEPROM con la calibración de
+las pistolas se guarda como NVRAM. Usa el `.mra` de `cores/bbusters/mra/`.
 
 ## Mechanized Attack
 

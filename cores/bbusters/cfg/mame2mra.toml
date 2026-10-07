@@ -1,0 +1,35 @@
+[global]
+author=["snk-fpga"]
+
+[parse]
+sourcefile=[ "bbusters.cpp" ]
+machines=[ "bbusters" ]
+rename = [
+    { setname="bbusters", name="Beast Busters (FF, SNK, 1989)" },
+]
+
+[buttons]
+names=[
+    { machine="bbusters", names="Disparo,Granada" }
+]
+
+[dipsw]
+delete=[{names=["Unused","Unknown"]}]
+
+[ROM]
+
+regions = [
+    { name="maincpu", width=16, reverse=true },
+    { name="audiocpu",             start="SND_START" },
+    { name="tx_tiles",             start="JTFRAME_BA1_START" },
+    { name="bg1_tiles",            start="BG1_START" },
+    { name="bg2_tiles",            start="BG2_START" },
+    { name="sprites1",             start="JTFRAME_BA2_START" },
+    { name="sprites2",             start="JTFRAME_BA3_START" },
+    { name="ymsnd:adpcma",         start="PCMA_START" },
+    { name="ymsnd:adpcmb",         start="PCMB_START" },
+    { name="sprites1:scale_table", start="JTFRAME_PROM_START", files=[ {name="bb-6.e7", crc="61f3de03", size=0x10000} ] },
+    { name="sprites2:scale_table", skip=true },
+]
+order = [ "maincpu", "audiocpu", "tx_tiles", "bg1_tiles", "bg2_tiles", "sprites1", "sprites2",
+          "ymsnd:adpcma", "ymsnd:adpcmb", "sprites1:scale_table" ]

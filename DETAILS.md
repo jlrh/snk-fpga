@@ -28,6 +28,29 @@ keep turning). **Known limitation:** the real video timing of the SNK8601/8602 i
 A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game ROMs are loaded at **runtime** from
 the `.mra`; the bitstream bakes no game data. Or build from source (`cores/gwar/`). See [`BUILD.md`](BUILD.md).
 
+### Beast Busters (SNK, 1989)
+Three-player gun shooter on the SNK A9003 board, the big brother of Mechanized Attack. Hardware: **68000** at 12 MHz +
+**Z80** at 4 MHz for the sound + **YM2610** (FM, SSG and ADPCM-A/B), two 16×16 scrolling playfields, an 8×8 text layer
+and **two** zooming sprite generators (sprites of 16 to 128 pixels scaled through a ROM table, as in Mechanized
+Attack). The three mounted guns are read through a **uPD7004** 10-bit ADC, and their calibration lives in a 28C04
+EEPROM, kept here as the core's NVRAM. The video is shared with Mechanized Attack. 256×224 (horizontal).
+
+**Status: playable on MiSTer** — tested on hardware (boot, a game, graphics, sound, light guns with a GunCon 3). In
+simulation the video matches MAME pixel-for-pixel in 721 of 721 reference scenes (700 from the attract and a game, plus
+21 with the playfields flipped), and the sound CPU writes to the YM2610 in the same order as MAME over 760 frames.
+The YM2610 is JT12's `jt10`, with one fix included in this repo (`cores/bbusters/hdl/jt10_adpcmb_cnt.v`): resetting a
+playing ADPCM-B channel raises its end-of-sample flag, as on the real chip and in MAME's ymfm.
+
+**Light guns:** players 1 and 2 through MiSTer's light-gun support (mouse, Sinden, Gun4IR, GunCon or analog stick),
+with an on-screen crosshair; player 3 on the left analog stick of the third controller (no crosshair). Calibrate the
+guns inside the core (OSD → *Define joystick buttons* → F10). The guns are mapped to the game's factory calibration,
+so no in-game calibration is needed. Trigger = button 1, grenade = button 2. **Known limitations:** the real video
+timing of the board is not documented; the core uses a 6 MHz pixel clock, 384×264 (15.6 kHz / 59.2 Hz), while MAME
+uses a nominal 60 Hz. The gun recoil solenoids are not driven.
+
+A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game ROMs are loaded at **runtime** from the
+`.mra`. Or build from source (`cores/bbusters/`). See [`BUILD.md`](BUILD.md).
+
 ### Mechanized Attack (SNK, 1989)
 Two-player light-gun shooter on the SNK A8002 board. Hardware: **68000** at 12 MHz + **Z80** at 4 MHz for the sound +
 **YM2608** (OPNA: 6 FM channels, SSG, rhythm and ADPCM-B voices), two 16×16 scrolling playfields of 256×32 tiles, an
@@ -64,7 +87,7 @@ jt12) are **not included**. Quick version:
 
 ## ROMs
 
-**Not included** (copyrighted material). Bring your own MAME romsets (**merged**, MAME 0.288: `gwar.zip`; `mechatt.zip` + `ym2608.zip`). The `.mra`
+**Not included** (copyrighted material). Bring your own MAME romsets (**merged**, MAME 0.288: `gwar.zip`; `bbusters.zip`; `mechatt.zip` + `ym2608.zip`). The `.mra`
 describes how to assemble it; every ROM is loaded at runtime.
 
 ## Credits
@@ -75,10 +98,12 @@ describes how to assemble it; every ROM is loaded at runtime.
   McPhail, Jarek Parchanski, Nicola Salmoria, Tomasz Slanina, Phil Stroffolino, Acho A. Tang, Victor Trucco), the
   board documentation by **Guru**, and the **ymfm** sound library (Aaron Giles) as the behavioural reference for the
   Y8950
-- **JT12 / JT49** (Jose Tejada) — the FM and SSG parts of the YM2608 in Mechanized Attack
+- **JT12 / JT49** (Jose Tejada) — the FM and SSG parts of the YM2608 in Mechanized Attack, and the YM2610 (`jt10`) in Beast Busters
 - **fx68k** (Jorge Cwik) — the 68000 CPU, as packaged in JTFRAME
 - **MAME** — for Mechanized Attack: the `snk/mechatt.cpp` driver and the `snk_bbusters_spr` sprite device (Bryan
   McPhail), and **ymfm** (Aaron Giles) as the behavioural reference for the YM2608
+- **MAME** — for Beast Busters: the `snk/bbusters.cpp` driver (Bryan McPhail), the `upd7004` ADC device (Dirk Best),
+  and **ymfm** (Aaron Giles) as the behavioural reference for the YM2610
 
 ## Acknowledgements
 
@@ -128,6 +153,32 @@ Hay un `.rbf` precompilado en [`releases/`](releases/) — **distribuible**: tod
 **tiempo de ejecución** desde el `.mra`; el bitstream no lleva datos del juego. O compílalo desde las fuentes
 (`cores/gwar/`). Ver [`BUILD.md`](BUILD.md).
 
+### Beast Busters (SNK, 1989)
+Juego de disparos con pistola para tres jugadores sobre la placa SNK A9003, la hermana mayor de Mechanized Attack.
+Hardware: **68000** a 12 MHz + **Z80** a 4 MHz para el sonido + **YM2610** (FM, SSG y ADPCM-A/B), dos fondos de 16×16
+con scroll, una capa de texto de 8×8 y **dos** generadores de sprites con zoom (sprites de 16 a 128 píxeles escalados
+por una tabla en ROM, como en Mechanized Attack). Las tres pistolas montadas se leen con un ADC **uPD7004** de 10 bits,
+y su calibración se guarda en una EEPROM 28C04, que aquí es la NVRAM del core. El vídeo es compartido con Mechanized
+Attack. 256×224 (horizontal).
+
+**Estado: jugable en MiSTer** — probado en placa (arranque, una partida, gráficos, sonido, pistolas con una GunCon 3).
+En simulación, el vídeo coincide píxel a píxel con MAME en 721 de 721 escenas de referencia (700 de la demo y de una
+partida, más 21 con los fondos volteados), y la CPU de sonido escribe al YM2610 en el mismo orden que MAME a lo largo
+de 760 cuadros. El YM2610 es el `jt10` de JT12, con un arreglo incluido en este repo
+(`cores/bbusters/hdl/jt10_adpcmb_cnt.v`): reiniciar un canal ADPCM-B que está sonando levanta su flag de fin de
+muestra, como en el chip real y en el ymfm de MAME.
+
+**Pistolas:** jugadores 1 y 2 mediante el soporte de pistola de MiSTer (ratón, Sinden, Gun4IR, GunCon o stick
+analógico), con mira en pantalla; el jugador 3, con el stick analógico izquierdo del tercer mando (sin mira).
+Calibra las pistolas dentro del core (OSD → *Define joystick buttons* → F10). Las pistolas están ajustadas a la
+calibración de fábrica del juego, así que no hace falta calibrarlas en el juego. Gatillo = botón 1, granada = botón 2.
+**Limitaciones conocidas:** el timing de vídeo real de la placa no está documentado; el core usa reloj de píxel de
+6 MHz, 384×264 (15,6 kHz / 59,2 Hz), mientras que MAME usa 60 Hz nominales. Los solenoides de retroceso de las
+pistolas no se manejan.
+
+Hay un `.rbf` precompilado en [`releases/`](releases/) — **distribuible**: todas las ROMs del juego se cargan en
+**tiempo de ejecución** desde el `.mra`. O compílalo desde las fuentes (`cores/bbusters/`). Ver [`BUILD.md`](BUILD.md).
+
 ### Mechanized Attack (SNK, 1989)
 Juego de disparos con pistola para dos jugadores sobre la placa SNK A8002. Hardware: **68000** a 12 MHz + **Z80** a
 4 MHz para el sonido + **YM2608** (OPNA: 6 canales FM, SSG, ritmo y voces ADPCM-B), dos fondos de 16×16 con scroll de
@@ -165,7 +216,7 @@ jtopl, jt12) **no se incluyen**. Versión rápida:
 
 ## ROMs
 
-**No se incluyen** (material con copyright). Usa tus propios romsets de MAME (**merged**, MAME 0.288: `gwar.zip`; `mechatt.zip` + `ym2608.zip`). El
+**No se incluyen** (material con copyright). Usa tus propios romsets de MAME (**merged**, MAME 0.288: `gwar.zip`; `bbusters.zip`; `mechatt.zip` + `ym2608.zip`). El
 `.mra` describe cómo montarlo; todas las ROMs se cargan en tiempo de ejecución.
 
 ## Créditos
@@ -176,10 +227,12 @@ jtopl, jt12) **no se incluyen**. Versión rápida:
   McPhail, Jarek Parchanski, Nicola Salmoria, Tomasz Slanina, Phil Stroffolino, Acho A. Tang, Victor Trucco), la
   documentación de la placa de **Guru** y la biblioteca de sonido **ymfm** (Aaron Giles) como referencia de
   comportamiento del Y8950
-- **JT12 / JT49** (Jose Tejada) — las partes FM y SSG del YM2608 de Mechanized Attack
+- **JT12 / JT49** (Jose Tejada) — las partes FM y SSG del YM2608 de Mechanized Attack, y el YM2610 (`jt10`) de Beast Busters
 - **fx68k** (Jorge Cwik) — la CPU 68000, tal como la empaqueta JTFRAME
 - **MAME** — para Mechanized Attack: el driver `snk/mechatt.cpp` y el dispositivo de sprites `snk_bbusters_spr` (Bryan
   McPhail), e **ymfm** (Aaron Giles) como referencia de comportamiento del YM2608
+- **MAME** — para Beast Busters: el driver `snk/bbusters.cpp` (Bryan McPhail), el dispositivo ADC `upd7004` (Dirk Best),
+  y **ymfm** (Aaron Giles) como referencia de comportamiento del YM2610
 
 ## Agradecimientos
 
@@ -217,3 +270,15 @@ hacen falta estas piezas, que se distribuyen desde su propio origen:
 | jtframe — framework de compilacion y modulos comunes (SDRAM, descarga, pistolas, CPU 68000 = fx68k de Jorge Cwik, CPU Z80 = T80 de Daniel Wallner, RAM) | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
 | jt12 — FM y SSG (jt49) del YM2608 | [https://github.com/jotego/jt12](https://github.com/jotego/jt12) | `modules/jt12` |
 <!-- /omf_release:dependencias:ffmechatt -->
+
+<!-- omf_release:dependencias:ffbbusters -->
+## Dependencias externas de `ffbbusters`
+
+Este repositorio contiene **solo el código de los cores**. Para compilar `ffbbusters`
+hacen falta estas piezas, que se distribuyen desde su propio origen:
+
+| Qué | De dónde | Dónde va |
+|---|---|---|
+| jtframe — framework de compilacion y modulos comunes (SDRAM, descarga, pistolas, CPU 68000 = fx68k de Jorge Cwik, CPU Z80 = T80 de Daniel Wallner, RAM) | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
+| jt12 — YM2610 (jt10, con jt49 para el SSG); jt10_adpcmb_cnt.v se sustituye por el de cores/bbusters/hdl | [https://github.com/jotego/jt12](https://github.com/jotego/jt12) | `modules/jt12` |
+<!-- /omf_release:dependencias:ffbbusters -->
